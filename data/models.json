@@ -1,0 +1,12 @@
+[
+  {
+    "name": "llama3-8b",
+    "provider": "local",
+    "endpoint": "http://localhost:8000/v1"
+  },
+  {
+    "name": "mistral-7b",
+    "provider": "huggingface",
+    "endpoint": "https://api.mistral.ai/v1"
+  }
+]

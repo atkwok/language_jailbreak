@@ -30,3 +30,8 @@ Run the baseline test for the English prompts
 Generate the slides
 
 Generate the report
+
+
+Ideas - 
+
+Perhaps 3-5 models, 4-8 languages, 5-20 prompts

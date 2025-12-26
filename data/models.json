@@ -1,73 +1,61 @@
 [
   {
     "model_name": "Mistral NeMo (12B)",
-    "type": "Non-Chinese (NVIDIA/Mistral)",
     "description": "A collaboration between NVIDIA and Mistral. It features a massive 128k context window and is specifically optimized to fit on 12GB+ VRAM GPUs (like RTX 3060/4070) without sacrificing reasoning capability.",
     "ollama_tag": "mistral-nemo"
   },
   {
     "model_name": "Nemotron Mini (4B)",
-    "type": "Non-Chinese (NVIDIA)",
     "description": "NVIDIA's specialized small model for edge devices. It is highly optimized for response speed and follows instructions well, running easily on 4GB VRAM.",
     "ollama_tag": "nemotron-mini"
   },
   {
     "model_name": "Llama 3.2 (3B)",
-    "type": "Non-Chinese (Meta)",
     "description": "Meta's lightweight model optimized for edge devices. Excellent instruction following and reasoning for its small size.",
     "ollama_tag": "llama3.2"
   },
   {
     "model_name": "Microsoft Phi-3.5 Mini (3.8B)",
-    "type": "Non-Chinese (Microsoft)",
     "description": "Trained on synthetic 'textbook' data. punches significantly above its weight in reasoning, math, and coding tasks.",
     "ollama_tag": "phi3.5"
   },
   {
     "model_name": "Gemma 2 (2B)",
-    "type": "Non-Chinese (Google)",
     "description": "Google's ultra-lightweight open model. Uses knowledge distillation to achieve high performance on very low-resource hardware.",
     "ollama_tag": "gemma2:2b"
   },
   {
     "model_name": "Mistral 7B (v0.3)",
-    "type": "Non-Chinese (Mistral AI)",
     "description": "The gold standard for 7B generalist models. Reliable, distinct personality, and very capable at general knowledge tasks.",
     "ollama_tag": "mistral"
   },
   {
     "model_name": "DeepSeek-R1 Distill Qwen (14B)",
-    "type": "Chinese (DeepSeek)",
     "description": "A 'reasoning' model (Chain-of-Thought) distilled from the massive DeepSeek-R1. Exceptional at logic, math, and complex code.",
     "ollama_tag": "deepseek-r1:14b"
   },
   {
     "model_name": "Qwen 2.5 (14B)",
-    "type": "Chinese (Alibaba)",
     "description": "The 'Goldilocks' generalist model. Significantly smarter than 7B models, dominating benchmarks in coding and math while remaining efficient.",
     "ollama_tag": "qwen2.5:14b"
   },
   {
     "model_name": "GLM-4-9B Chat",
-    "type": "Chinese (Zhipu AI)",
     "description": "Known for handling very long contexts and native tool-use capabilities. Great for document analysis.",
     "ollama_tag": "glm4:9b"
   },
   {
     "model_name": "Yi-1.5 (9B)",
-    "type": "Chinese (01.AI)",
     "description": "Strong bilingual (English/Chinese) performance with a focus on creative writing and conversation flow.",
     "ollama_tag": "yi:9b"
   },
   {
     "model_name": "MiniCPM-V 2.6 (8B)",
-    "type": "Chinese (OpenBMB)",
     "description": "A multimodal model that can 'see' images. Best-in-class for OCR and visual reasoning on consumer hardware.",
     "ollama_tag": "minicpm-v"
   },
   {
     "model_name": "InternLM 2.5 (20B)",
-    "type": "Chinese (Shanghai AI Lab)",
     "description": "A larger research-oriented model with strict instruction following and deep reasoning capabilities. Fits on 24GB VRAM.",
     "ollama_tag": "internlm2:20b"
   }

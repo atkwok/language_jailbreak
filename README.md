@@ -13,3 +13,20 @@ Structure so far:
 - `data/prompts.en.json`: Dummy list of English jailbreak prompts to seed translations.
 - `translate.py`: Helper to translate prompts into other languages and save them for downstream testing.
 - `translations/`: Placeholder directory to store translated prompt files produced by `translate.py`.
+
+
+TODO: 
+
+Write the translation pipeline (both to and from English), then generate and save the translations in `data/`
+
+Write the LLM-as-judge pipeline to score the outputs
+
+Write the rest of the colab code in order to run the prompts against the models
+
+Write the loop framework to iterate over different languages/models
+
+Run the baseline test for the English prompts
+
+Generate the slides
+
+Generate the report

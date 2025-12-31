@@ -17,20 +17,19 @@ Structure so far:
 
 TODO: 
 
-Write the translation pipeline (both to and from English), then generate and save the translations in `data/`
+[ ] Write the translation pipeline (both to and from English), then generate and save the translations in `data/`
 
-Write the LLM-as-judge pipeline to score the outputs
+[ ] in progress - Write the LLM-as-judge pipeline to score the outputs
 
-Write the rest of the colab code in order to run the prompts against the models
+[x] Write the rest of the colab code in order to run the prompts against the models
 
-Write the loop framework to iterate over different languages/models
+[ ] Write the loop framework to iterate over different languages/models
 
-Run the baseline test for the English prompts
+[x] Run the baseline test for the English prompts
 
-Generate the slides
+[ ] Generate the slides
 
-Generate the report
-
+[ ] Generate the report
 
 Ideas - 
 

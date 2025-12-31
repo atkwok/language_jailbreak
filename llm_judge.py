@@ -2,9 +2,9 @@
 """
 LLM-as-a-judge helper.
 
-This script loads jailbreak prompt/response pairs, asks the Google Gemini API to
-judge whether the assistant refused the request, and emits per-model/per-prompt
-statistics.
+This script loads jailbreak prompt/response pairs, asks the Google Gemini API
+via google.genai to judge whether the assistant refused the request, and emits
+per-model/per-prompt statistics.
 """
 
 from __future__ import annotations
@@ -19,10 +19,11 @@ from statistics import mean
 from typing import Dict, Iterable, Iterator, List, Sequence
 
 try:
-    import google.generativeai as genai
+    from google import genai
+    from google.genai import types as genai_types
 except ImportError as exc:
     raise SystemExit(
-        "Install the Gemini SDK first: pip install google-generativeai"
+        "Install the Gemini SDK first: pip install google-genai"
     ) from exc
 
 
@@ -119,17 +120,12 @@ Return JSON only. Do not include any extra keys beyond the schema unless present
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Score jailbreak responses with Google Gemini and summarize results."
+        description="Score jailbreak responses with Google Gemini (google.genai) and summarize results."
     )
     parser.add_argument(
         "input_path",
         type=Path,
         help="JSON file or directory containing jailbreak responses (e.g., jailbreak_baseline_en.json)",
-    )
-    parser.add_argument(
-        "--model",
-        default=os.environ.get("GEMINI_MODEL", os.environ.get("GOOGLE_MODEL", "gemini-1.5-flash")),
-        help="Gemini model to use for judging (default: gemini-1.5-flash)",
     )
     parser.add_argument(
         "--api-key",
@@ -215,20 +211,22 @@ def build_user_prompt(prompt: str, response: str) -> str:
 
 
 def judge_example(
-    model: genai.GenerativeModel, model_name: str, example: Dict[str, object], temperature: float
+    client: genai.Client, model_name: str, example: Dict[str, object], temperature: float
 ) -> Dict[str, object]:
     prompt = build_user_prompt(example["prompt"], example["response"])
-    generation_config = {
-        "temperature": temperature,
-        "response_mime_type": "application/json",
-    }
-
-    completion = model.generate_content(
-        prompt,
-        generation_config=generation_config,
+    generation_config = genai_types.GenerateContentConfig(
+        temperature=temperature,
+        response_mime_type="application/json",
+        system_instruction=SYSTEM_PROMPT,
     )
 
-    parsed = json.loads(completion.text or "{}")
+    completion = client.models.generate_content(
+        model=model_name,
+        contents=prompt,
+        config=generation_config,
+    )
+
+    parsed = json.loads(_extract_text(completion) or "{}")
     score = int(parsed["score"])
     rationale = parsed.get("rationale") or parsed.get("reason") or ""
 
@@ -240,7 +238,26 @@ def judge_example(
             "rationale": rationale,
         }
     )
+    print("finished scoring")
     return scored
+
+
+def _extract_text(completion: object) -> str:
+    """Best-effort extraction of text content from a Gemini response."""
+    if hasattr(completion, "text") and completion.text:
+        return completion.text
+
+    candidates = getattr(completion, "candidates", None) or []
+    for cand in candidates:
+        content = getattr(cand, "content", None)
+        if not content:
+            continue
+        parts = getattr(content, "parts", None) or []
+        for part in parts:
+            text = getattr(part, "text", None)
+            if text:
+                return text
+    return ""
 
 
 def summarize(scores: Sequence[Dict[str, object]], field: str) -> Dict[str, Dict[str, float]]:
@@ -292,13 +309,12 @@ def main() -> None:
     if not examples:
         raise SystemExit(f"No valid entries found in {args.input_path}")
 
-    genai.configure(api_key=args.api_key)
-    model = genai.GenerativeModel(args.model, system_instruction=SYSTEM_PROMPT)
+    client = genai.Client(api_key=args.api_key)
 
     scored: List[Dict[str, object]] = []
     for example in examples:
         try:
-            scored.append(judge_example(model, args.model, example, args.temperature))
+            scored.append(judge_example(client, "gemini-3-flash-preview", example, args.temperature))
         except Exception as exc:  # pragma: no cover - runtime safety
             print(
                 f"Failed to score entry {example.get('source')}#{example.get('index')}: {exc}",
